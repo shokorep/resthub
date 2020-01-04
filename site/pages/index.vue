@@ -28,39 +28,40 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 
+const apilists = [
+  {
+    apiName: 'test1 API',
+    owner: 'AAA.Inc',
+    category: ['example1', 'example2', 'example3']
+  },
+  {
+    apiName: 'test2 API',
+    owner: 'BBB.Inc',
+    category: ['example1', 'example4', 'example5']
+  },
+  {
+    apiName: 'test3 API',
+    owner: 'CCC.Inc',
+    category: ['example1', 'example2', 'example6']
+  },
+  {
+    apiName: 'test4 API',
+    owner: 'DDD.Inc',
+    category: ['example1', 'example4', 'example7']
+  }
+]
+
 @Component
 export default class extends Vue {
-  apilist = [
-    {
-      apiName: 'test1 API',
-      owner: 'AAA.Inc',
-      category: ['example1', 'example2', 'example3']
-    },
-    {
-      apiName: 'test2 API',
-      owner: 'BBB.Inc',
-      category: ['example1', 'example4', 'example5']
-    },
-    {
-      apiName: 'test3 API',
-      owner: 'CCC.Inc',
-      category: ['example1', 'example2', 'example6']
-    },
-    {
-      apiName: 'test4 API',
-      owner: 'DDD.Inc',
-      category: ['example1', 'example4', 'example7']
-    }
-  ]
+  apilist = apilists
+  categories: string[] = []
 
-  categories = []
-
-  getUniqueCategories(apilist) {
-    const notUniqueCategories = []
+  getUniqueCategories(apilist: typeof apilists) {
+    const notUniqueCategories: string[][] = []
     apilist.forEach((api) => {
       notUniqueCategories.push(api.category)
     })
-    const categories = notUniqueCategories
+    const categories: string[] = notUniqueCategories
       .flat()
       .filter((element, index, array) => array.indexOf(element) === index)
     return categories
