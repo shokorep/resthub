@@ -1,50 +1,99 @@
 <template>
   <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        nuxt-ts
-      </h1>
-      <h2 class="subtitle">
-        {{ $vxm.users.fullname }}'s swell Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+    <div class="header">
+      <div>
+        <h1>RestHub</h1>
+      </div>
+      <div class="form">
+        <input class="inputtext" type="text" placeholder="Search public APIs" />
+        <input class="submit" type="submit" value="Search" />
+      </div>
+    </div>
+    <div class="category">
+      <ul>
+        <li v-for="item in categories" :key="item">
+          <input type="checkbox" name="category" />{{ item }}
+        </li>
+      </ul>
+    </div>
+    <div class="apilists">
+      <div v-for="item in apilist" :key="item" class="card">
+        <h1 class="apiname">{{ item.apiName }}</h1>
+        <h2 class="owner">{{ item.owner }}</h2>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import Logo from '~/components/atoms/Logo.vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 
-@Component({
-  components: { Logo }
-})
+@Component
 export default class extends Vue {
-  @Prop()
-  test!: {
-    hoge: string
+  apilist = [
+    {
+      apiName: 'test1 API',
+      owner: 'AAA.Inc',
+      category: ['example1', 'example2', 'example3']
+    },
+    {
+      apiName: 'test2 API',
+      owner: 'BBB.Inc',
+      category: ['example1', 'example4', 'example5']
+    },
+    {
+      apiName: 'test3 API',
+      owner: 'CCC.Inc',
+      category: ['example1', 'example2', 'example6']
+    },
+    {
+      apiName: 'test4 API',
+      owner: 'DDD.Inc',
+      category: ['example1', 'example4', 'example7']
+    }
+  ]
+
+  categories = []
+
+  getUniqueCategories(apilist) {
+    const notUniqueCategories = []
+    apilist.forEach((api) => {
+      notUniqueCategories.push(api.category)
+    })
+    const categories = notUniqueCategories
+      .flat()
+      .filter((element, index, array) => array.indexOf(element) === index)
+    return categories
   }
 
-  async mounted() {
-    await this.$vxm.users.doAnotherAsyncStuff(4)
+  mounted() {
+    this.categories = this.getUniqueCategories(this.apilist)
   }
 }
 </script>
 
 <style scoped>
 /* autoprefixer grid: no-autoplace */
+.inputtext {
+  width: 80%;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.submit {
+  width: 70px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.card {
+  /* width: 350px; */
+  margin: 5px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px #ccc;
+}
+
 .container {
   display: grid;
 
@@ -55,59 +104,47 @@ export default class extends Vue {
 
   /* Caution: `1fr` has different results in IE 11 */
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(6, 1fr);
 }
 
-.container > div {
-  grid-column: 2 / 3;
+.header {
+  grid-column: 1 / 4;
+  grid-row: 1 / 2;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+.header > h1 {
+  grid-column: 1 / 4;
+  grid-row: 2 / 3;
+  width: 100%;
+}
+
+.form {
+  grid-column: 2 / 4;
   grid-row: 2 / 3;
 }
 
-.title {
-  font-size: 100px;
-  font-weight: 300;
-  color: #35495e;
-  letter-spacing: 1px;
+.category {
+  grid-column: 1 / 2;
+  grid-row: 2 / 7;
 }
 
-.subtitle {
-  padding-bottom: 15px;
-  font-size: 42px;
-  font-weight: 300;
-  color: #526488;
-  word-spacing: 5px;
+.apilists {
+  grid-column: 2 / 4;
+  grid-row: 2 / 7;
 }
 
-.links {
-  padding-top: 15px;
+ul {
+  list-style: none;
 }
 
-.button--green {
-  display: inline-block;
-  padding: 10px 30px;
-  color: #3b8070;
-  text-decoration: none;
-  border: 1px solid;
-  border-radius: 4px;
+li {
+  text-align: left;
 }
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  padding: 10px 30px;
-  margin-left: 15px;
-  color: #35495e;
-  text-decoration: none;
-  border: 1px solid;
-  border-radius: 4px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+input {
+  font-size: 11pt;
 }
 </style>
