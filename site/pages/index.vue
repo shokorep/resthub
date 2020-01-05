@@ -33,42 +33,18 @@ const apilists = [
     apiName: 'test1 API',
     owner: 'AAA.Inc',
     category: ['example1', 'example2', 'example3']
-  },
-  {
-    apiName: 'test2 API',
-    owner: 'BBB.Inc',
-    category: ['example1', 'example4', 'example5']
-  },
-  {
-    apiName: 'test3 API',
-    owner: 'CCC.Inc',
-    category: ['example1', 'example2', 'example6']
-  },
-  {
-    apiName: 'test4 API',
-    owner: 'DDD.Inc',
-    category: ['example1', 'example4', 'example7']
   }
 ]
+console.log(apilists)
 
 @Component
 export default class extends Vue {
-  apilist = apilists
-  categories: string[] = []
-
-  getUniqueCategories(apilist: typeof apilists) {
-    const notUniqueCategories: string[][] = []
-    apilist.forEach((api) => {
-      notUniqueCategories.push(api.category)
-    })
-    const categories: string[] = notUniqueCategories
-      .flat()
-      .filter((element, index, array) => array.indexOf(element) === index)
-    return categories
-  }
+  apilist = this.$store.state.apilists
+  categories = []
 
   mounted() {
-    this.categories = this.getUniqueCategories(this.apilist)
+    this.$store.commit('setCategories')
+    this.categories = this.$store.state.categories
   }
 }
 </script>
