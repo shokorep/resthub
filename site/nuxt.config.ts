@@ -19,7 +19,14 @@ const config: Configuration = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css?family=Noto+Sans+JP:300,400,500,700|Material+Icons'
+      }
+    ],
     ...(SUPPORT_IE === 'true'
       ? {
           script: [
@@ -54,7 +61,9 @@ const config: Configuration = {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://typescript.nuxtjs.org/
-    ['@nuxt/typescript-build', { typeCheck: { eslint: true } }]
+    ['@nuxt/typescript-build', { typeCheck: { eslint: true } }],
+    // Doc: https://github.com/nuxt-community/vuetify-module
+    '@nuxtjs/vuetify'
   ],
   /*
    ** Nuxt.js modules
@@ -70,6 +79,16 @@ const config: Configuration = {
    ** See https://axios.nuxtjs.org/options
    */
   axios: { baseURL: 'https://example.com/v1' },
+  /*
+   ** Vuetify module configuration
+   ** See https://github.com/nuxt-community/vuetify-module#options
+   */
+  vuetify: {
+    defaultAssets: {
+      font: { family: 'Noto Sans JP' }
+    },
+    treeShake: true
+  },
   /*
    ** Build configuration
    */
