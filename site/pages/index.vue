@@ -8,13 +8,29 @@
       <h2 class="subtitle">
         {{ $vxm.users.fullname }}'s swell Nuxt.js project
       </h2>
+      <div v-for="user in users" :key="user.id">
+        <v-btn
+          class="my-1 white--text"
+          color="blue"
+          :to="`/users?userId=${user.id}`"
+          nuxt
+          v-text="user.lastname"
+        >
+        </v-btn>
+      </div>
       <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
+        <a
+          href="https://nuxtjs.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="button--green"
+        >
           Documentation
         </a>
         <a
           href="https://github.com/nuxt/nuxt.js"
           target="_blank"
+          rel="noopener noreferrer"
           class="button--grey"
         >
           GitHub
@@ -27,15 +43,21 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import Logo from '~/components/atoms/Logo.vue'
+import { Users } from '~/apis/users'
 
 @Component({
-  components: { Logo }
+  components: { Logo },
+  async asyncData() {
+    return { users: await $nuxt.$api.users.$get() }
+  }
 })
 export default class extends Vue {
   @Prop()
   test!: {
     hoge: string
   }
+
+  users = [] as Users
 
   async mounted() {
     await this.$vxm.users.doAnotherAsyncStuff(4)

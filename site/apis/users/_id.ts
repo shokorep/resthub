@@ -1,5 +1,11 @@
 import { MockMethods } from 'axios-mock-server'
-import { users, Users } from './index'
+import { users } from './index'
+
+export interface User {
+  id: number
+  firstname: string
+  lastname: string
+}
 
 const methods: MockMethods = {
   get: ({ values }) => [200, users.find((user) => user.id === values.id)]
@@ -7,7 +13,7 @@ const methods: MockMethods = {
 
 export interface Methods {
   get: {
-    response: Users
+    response: User
   }
 }
 
