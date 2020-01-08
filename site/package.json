@@ -12,7 +12,7 @@
     "generate": "npm run build:api && nuxt-ts generate",
     "build:api": "aspida --build",
     "lint": "npm run lint:script && npm run lint:style",
-    "lint:script": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
+    "lint:script": "eslint --ext .ts,.js,.vue --ignore-path ../.gitignore .",
     "lint:style": "stylelint \"**/*.{*(s)css,vue}\"",
     "lint:fix": "npm run lint:script -- --fix && npm run lint:style -- --fix",
     "typecheck": "tsc --noEmit"
