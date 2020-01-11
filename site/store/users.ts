@@ -45,7 +45,7 @@ export class UserStore extends VuexModule {
   }
 
   get fullname() {
-    return this.lastname + ' ' + this.firstname
+    return `${this.lastname} ${this.firstname}`
   }
 
   set fullname(name: string) {
