@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
     "lib": [
@@ -16,12 +16,10 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "~/*": ["./client/*"],
+      "~~/*": ["./*"],
+      "@/*": ["./client/*"],
+      "@@/*": ["./*"]
     },
     "types": [
       "@types/node",

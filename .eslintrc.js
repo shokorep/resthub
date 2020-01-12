@@ -17,7 +17,8 @@ module.exports = {
   globals: { $nuxt: 'readonly' },
   rules: {
     'max-lines': ['error', 200],
-    'no-console': +(process.env.NODE_ENV === 'production'),
+    'no-console': process.env.NODE_ENV === 'development' ? 'warn' : 'error',
+    'no-unused-vars': 'off',
     'prefer-template': 'error'
   },
   overrides: [

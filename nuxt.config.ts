@@ -5,6 +5,8 @@ const { ENABLE_MOCK, SUPPORT_IE } = process.env
 
 const config: Configuration = {
   mode: 'spa',
+  // Doc: https://nuxtjs.org/api/configuration-srcdir/
+  srcDir: 'client/',
   /*
    ** Headers of the page
    */
@@ -58,10 +60,12 @@ const config: Configuration = {
    ** Nuxt.js dev-modules
    */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module',
     // Doc: https://typescript.nuxtjs.org/
     ['@nuxt/typescript-build', { typeCheck: { eslint: true } }],
+    // Doc: https://github.com/nuxt-community/dotenv-module
+    '@nuxtjs/dotenv',
+    // Doc: https://github.com/nuxt-community/stylelint-module
+    '@nuxtjs/stylelint-module',
     // Doc: https://github.com/nuxt-community/vuetify-module
     '@nuxtjs/vuetify'
   ],
@@ -69,8 +73,6 @@ const config: Configuration = {
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios'
   ],
