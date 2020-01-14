@@ -1,3 +1,35 @@
 {
-  "extends": "./site/tsconfig.json"
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": [
+      "esnext",
+      "esnext.asynciterable",
+      "dom"
+    ],
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./client/*"],
+      "~~/*": ["./*"],
+      "@/*": ["./client/*"],
+      "@@/*": ["./*"]
+    },
+    "types": [
+      "@types/node",
+      "@nuxt/types",
+      "@nuxtjs/axios",
+      "vuetify"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

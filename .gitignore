@@ -90,7 +90,5 @@ sw.*
 *.swp
 
 ### Misc
-site/apis/$*.ts
-
+**/apis/$*.ts
 types/*
-!.gitkeep
