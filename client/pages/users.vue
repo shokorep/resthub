@@ -16,17 +16,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { Country } from '~/apis/samples/countries.json'
 import { User } from '~/apis/samples/users.json'
 
 @Component({
-  async fetch() {
-    await $nuxt.$vxm.countries.fetchCountries()
-  },
-
   async asyncData({ route }) {
     const countryId = +route.query.countryId
 
     return {
+      countries: await $nuxt.$api.samples.countries_json.$get(),
       users: (
         (await $nuxt.$api.samples.users_json.$get()).find(
           (u) => u.countryId === countryId
@@ -36,11 +34,13 @@ import { User } from '~/apis/samples/users.json'
   }
 })
 export default class extends Vue {
+  countries: Country[] = []
   users: User['users'] = []
 
   get countryName() {
+    const countryId = +this.$route.query.countryId
     return (
-      this.$vxm.countries.country(+this.$route.query.countryId) || { name: '' }
+      this.countries.find((c) => c.countryId === countryId) || { name: '' }
     ).name
   }
 }

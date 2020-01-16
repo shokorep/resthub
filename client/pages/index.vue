@@ -42,18 +42,19 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { Country } from '~/apis/samples/countries.json'
 import Logo from '~/components/atoms/Logo.vue'
 
 @Component({
   components: { Logo },
-  async fetch() {
-    await $nuxt.$vxm.countries.fetchCountries()
+  async asyncData() {
+    return {
+      countries: await $nuxt.$api.samples.countries_json.$get()
+    }
   }
 })
 export default class extends Vue {
-  get countries() {
-    return this.$vxm.countries.countries
-  }
+  countries: Country[] = []
 }
 </script>
 
