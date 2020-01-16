@@ -6,15 +6,15 @@
         nuxt-ts
       </h1>
       <h2 class="subtitle">
-        {{ $vxm.users.fullname }}'s swell Nuxt.js project
+        Swell RESThub project
       </h2>
-      <div v-for="user in users" :key="user.id">
+      <div v-for="country in countries" :key="country.countryId">
         <v-btn
           class="my-1 white--text"
           color="blue"
-          :to="`/users?userId=${user.id}`"
+          :to="`/users?countryId=${country.countryId}`"
           nuxt
-          v-text="user.lastname"
+          v-text="country.name"
         >
         </v-btn>
       </div>
@@ -41,26 +41,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import Logo from '~/components/atoms/Logo.vue'
-import { Users } from '~/apis/users'
 
 @Component({
   components: { Logo },
-  async asyncData() {
-    return { users: await $nuxt.$api.users.$get() }
+  async fetch() {
+    await $nuxt.$vxm.countries.fetchCountries()
   }
 })
 export default class extends Vue {
-  @Prop()
-  test!: {
-    hoge: string
-  }
-
-  users = [] as Users
-
-  async mounted() {
-    await this.$vxm.users.doAnotherAsyncStuff(4)
+  get countries() {
+    return this.$vxm.countries.countries
   }
 }
 </script>

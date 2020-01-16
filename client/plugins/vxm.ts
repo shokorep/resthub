@@ -1,8 +1,8 @@
 import { Plugin } from '@nuxt/types'
-import UsersProxy from '~/store/users'
+import CountriesProxy from '~/store/countries'
 
 const vxm = {
-  users: UsersProxy
+  countries: CountriesProxy
 }
 
 declare module 'vue/types/vue' {

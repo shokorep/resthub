@@ -1,8 +1,6 @@
 import 'dotenv/config'
 import { Configuration } from '@nuxt/types'
 
-const { ENABLE_MOCK, SUPPORT_IE } = process.env
-
 const config: Configuration = {
   mode: 'spa',
   // Doc: https://nuxtjs.org/api/configuration-srcdir/
@@ -28,16 +26,7 @@ const config: Configuration = {
         href:
           'https://fonts.googleapis.com/css?family=Noto+Sans+JP:300,400,500,700|Material+Icons'
       }
-    ],
-    ...(SUPPORT_IE === 'true'
-      ? {
-          script: [
-            {
-              src: 'https://polyfill.io/v3/polyfill.min.js?features=EventSource'
-            }
-          ]
-        }
-      : {})
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -50,12 +39,7 @@ const config: Configuration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-    '~/plugins/axios',
-    '~/plugins/vxm',
-    '~/plugins/api',
-    ...(ENABLE_MOCK === 'true' ? ['~/plugins/faker', '~/plugins/mock'] : [])
-  ],
+  plugins: ['~/plugins/axios', '~/plugins/vxm', '~/plugins/api'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -80,7 +64,7 @@ const config: Configuration = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: { baseURL: 'https://example.com/v1' },
+  axios: { baseURL: process.env.BASE_URL },
   /*
    ** Vuetify module configuration
    ** See https://github.com/nuxt-community/vuetify-module#options
@@ -95,15 +79,6 @@ const config: Configuration = {
    ** Build configuration
    */
   build: {
-    /*
-     ** Customize PostCSS Loader plugins
-     */
-    postcss: {
-      preset: {
-        // Caution: https://github.com/postcss/autoprefixer#beware-of-enabling-autoplacement-in-old-projects
-        autoprefixer: SUPPORT_IE === 'true' ? { grid: 'autoplace' } : {}
-      }
-    }
     /*
      ** You can extend webpack config here
      */
