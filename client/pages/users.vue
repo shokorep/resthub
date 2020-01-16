@@ -1,7 +1,12 @@
 <template>
   <div class="container">
     <v-card>
-      <v-card-text v-text="fullname" />
+      <v-card-text v-text="countryName" />
+      <v-card-text
+        v-for="user in users"
+        :key="user.userId"
+        v-text="user.name"
+      />
       <v-card-actions>
         <v-btn color="blue" to="/" nuxt outlined v-text="'back'" />
       </v-card-actions>
@@ -11,20 +16,32 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { User } from '~/apis/users/_id'
+import { Country } from '~/apis/samples/countries.json'
+import { User } from '~/apis/samples/users.json'
 
 @Component({
   async asyncData({ route }) {
-    const userId = +route.query.userId
+    const countryId = +route.query.countryId
 
-    return { user: await $nuxt.$api.users._id(userId).$get() }
+    return {
+      countries: await $nuxt.$api.samples.countries_json.$get(),
+      users: (
+        (await $nuxt.$api.samples.users_json.$get()).find(
+          (u) => u.countryId === countryId
+        ) || { users: [] }
+      ).users
+    }
   }
 })
 export default class extends Vue {
-  user!: User
+  countries: Country[] = []
+  users: User['users'] = []
 
-  get fullname() {
-    return `${this.user.lastname} ${this.user.firstname}`
+  get countryName() {
+    const countryId = +this.$route.query.countryId
+    return (
+      this.countries.find((c) => c.countryId === countryId) || { name: '' }
+    ).name
   }
 }
 </script>
