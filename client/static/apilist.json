@@ -1,16 +1,16 @@
 [
   {
     "apiName": "test1 API",
-    "owner": "Twitter.Inc",
+    "owner": "Facebook.Inc",
     "discription": "apis description will be appear here",
     "category": ["SNS", "example2", "example3"],
     "updated": "a month ago",
     "numberOfDownloads": 12345,
-    "icon": "http://localhost:3000/facebook.png"
+    "icon": "./facebook.png"
   },
   {
     "apiName": "test2 API",
-    "owner": "Facebook.Inc",
+    "owner": "Twitter.Inc",
     "discription": "apis description will be appear here",
     "category": ["SNS", "example4", "example5"],
     "updated": "a month ago",
