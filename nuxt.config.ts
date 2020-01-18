@@ -1,10 +1,10 @@
 import 'dotenv/config'
 import { Configuration } from '@nuxt/types'
 
-const { ENABLE_MOCK, SUPPORT_IE } = process.env
-
 const config: Configuration = {
   mode: 'spa',
+  // Doc: https://nuxtjs.org/api/configuration-srcdir/
+  srcDir: 'client/',
   /*
    ** Headers of the page
    */
@@ -19,16 +19,14 @@ const config: Configuration = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-    ...(SUPPORT_IE === 'true'
-      ? {
-          script: [
-            {
-              src: 'https://polyfill.io/v3/polyfill.min.js?features=EventSource'
-            }
-          ]
-        }
-      : {})
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css?family=Noto+Sans+JP:300,400,500,700|Material+Icons'
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -41,27 +39,24 @@ const config: Configuration = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-    '~/plugins/axios',
-    '~/plugins/vxm',
-    '~/plugins/api',
-    ...(ENABLE_MOCK === 'false' ? ['~/plugins/faker', '~/plugins/mock'] : [])
-  ],
+  plugins: ['~/plugins/axios', '~/plugins/api'],
   /*
    ** Nuxt.js dev-modules
    */
   buildModules: [
+    // Doc: https://typescript.nuxtjs.org/
+    ['@nuxt/typescript-build', { typeCheck: { eslint: true } }],
+    // Doc: https://github.com/nuxt-community/dotenv-module
+    '@nuxtjs/dotenv',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    // Doc: https://typescript.nuxtjs.org/
-    ['@nuxt/typescript-build', { typeCheck: { eslint: true } }]
+    // Doc: https://github.com/nuxt-community/vuetify-module
+    '@nuxtjs/vuetify'
   ],
   /*
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios'
   ],
@@ -69,20 +64,21 @@ const config: Configuration = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: { baseURL: 'https://example.com/v1' },
+  axios: { baseURL: process.env.BASE_URL },
+  /*
+   ** Vuetify module configuration
+   ** See https://github.com/nuxt-community/vuetify-module#options
+   */
+  vuetify: {
+    defaultAssets: {
+      font: { family: 'Noto Sans JP' }
+    },
+    treeShake: true
+  },
   /*
    ** Build configuration
    */
   build: {
-    /*
-     ** Customize PostCSS Loader plugins
-     */
-    postcss: {
-      preset: {
-        // Caution: https://github.com/postcss/autoprefixer#beware-of-enabling-autoplacement-in-old-projects
-        autoprefixer: SUPPORT_IE === 'true' ? { grid: 'autoplace' } : {}
-      }
-    }
     /*
      ** You can extend webpack config here
      */

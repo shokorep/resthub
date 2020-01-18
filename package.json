@@ -1,0 +1,74 @@
+{
+  "name": "resthub",
+  "version": "0.0.1",
+  "description": "",
+  "author": "m-mitsuhide",
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://github.com/aspidajs/resthub#readme",
+  "bugs": {
+    "url": "https://github.com/aspidajs/resthub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aspidajs/resthub.git"
+  },
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:*",
+    "dev:client": "nuxt-ts",
+    "dev:api": "aspida --watch",
+    "generate": "npm run build:api && nuxt-ts generate",
+    "build:api": "aspida --build",
+    "lint": "npm run lint:script && npm run lint:style",
+    "lint:script": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
+    "lint:style": "stylelint \"**/*.{*(s)css,vue}\"",
+    "lint:fix": "npm run lint:script -- --fix && npm run lint:style -- --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": "eslint",
+    "*.{*(s)css,vue}": "stylelint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "arrowParens": "always",
+    "singleQuote": true
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-twbs-bootstrap/scss",
+      "stylelint-config-prettier"
+    ]
+  },
+  "dependencies": {
+    "@aspida/axios": "^0.1.1",
+    "@nuxt/typescript-runtime": "^0.3.7",
+    "@nuxtjs/axios": "^5.9.3",
+    "@nuxtjs/dotenv": "^1.4.1",
+    "nuxt": "^2.11.0",
+    "nuxt-property-decorator": "^2.5.0"
+  },
+  "devDependencies": {
+    "@nuxt/typescript-build": "^0.5.6",
+    "@nuxtjs/eslint-config-typescript": "^1.0.0",
+    "@nuxtjs/stylelint-module": "^3.2.1",
+    "@nuxtjs/vuetify": "^1.10.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-nuxt": ">=0.5.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.0.7",
+    "lint-staged": "^9.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
+    "stylelint": "^13.0.0",
+    "stylelint-config-prettier": "^8.0.1",
+    "stylelint-config-twbs-bootstrap": "^1.1.0",
+    "typescript": "^3.7.4"
+  }
+}

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "lib": [
       "esnext",
       "esnext.asynciterable",
@@ -16,17 +17,16 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+      "~/*": ["./client/*"],
+      "~~/*": ["./*"],
+      "@/*": ["./client/*"],
+      "@@/*": ["./*"]
     },
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@nuxtjs/axios"
+      "@nuxtjs/axios",
+      "vuetify"
     ]
   },
   "exclude": [
