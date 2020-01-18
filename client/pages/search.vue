@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- <Header /> -->
+    <Header />
     <div class="body">
       <div class="side">
         <ul>
@@ -21,7 +21,7 @@
         </div>
         <div class="search-result-header">
           <p class="number-of-hits">345 apis found</p>
-          <!-- <Buttons /> -->
+          <Buttons />
         </div>
         <div class="search-result-body">
           <!-- <div v-for="api in apilist" :key="api" class="card">
@@ -29,9 +29,9 @@
           </div> -->
         </div>
         <div class="search-result-footer">
-          <!-- <Buttons /> -->
+          <Buttons />
         </div>
-        <!-- <Footer /> -->
+        <Footer />
       </div>
     </div>
   </div>
@@ -40,13 +40,13 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 
-// import Header from '~/components/Header.vue'
-// import Footer from '~/components/Footer.vue'
-// import Buttons from '~/components/Buttons.vue'
+import Header from '~/components/Header.vue'
+import Footer from '~/components/Footer.vue'
+import Buttons from '~/components/Buttons.vue'
 // import Card from '~/components/Card.vue'
 
 @Component({
-  // components: { Header, Footer, Buttons, Card }
+  components: { Header, Footer, Buttons }
 })
 export default class extends Vue {}
 </script>
