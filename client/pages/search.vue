@@ -5,9 +5,9 @@
       <div class="side">
         <ul>
           <p class="category-title">Category</p>
-          <!-- <li v-for="item in categories" :key="item">
+          <li v-for="item in categories" :key="item">
             <input type="checkbox" name="category" />{{ item }}
-          </li> -->
+          </li>
         </ul>
       </div>
       <div class="main">
@@ -57,6 +57,22 @@ import Card from '~/components/Card.vue'
 })
 export default class extends Vue {
   apilist: Api[] = []
+  categories: string[] = []
+
+  makeCategoriesUnique() {
+    const notUniqueCategories: string[][] = []
+    this.apilist.forEach((api) => {
+      notUniqueCategories.push(api.category)
+    })
+    const categories: string[] = notUniqueCategories
+      .flat()
+      .filter((element, index, array) => array.indexOf(element) === index)
+    this.categories = categories
+  }
+
+  mounted() {
+    this.makeCategoriesUnique()
+  }
 }
 </script>
 
