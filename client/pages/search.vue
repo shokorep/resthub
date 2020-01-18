@@ -24,9 +24,9 @@
           <Buttons />
         </div>
         <div class="search-result-body">
-          <!-- <div v-for="api in apilist" :key="api" class="card">
+          <div v-for="api in apilist" :key="api" class="card">
             <Card :api="api" />
-          </div> -->
+          </div>
         </div>
         <div class="search-result-footer">
           <Buttons />
@@ -40,15 +40,24 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 
+import { Api } from '~/apis/apilist.json'
+
 import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
 import Buttons from '~/components/Buttons.vue'
-// import Card from '~/components/Card.vue'
+import Card from '~/components/Card.vue'
 
 @Component({
-  components: { Header, Footer, Buttons }
+  components: { Header, Footer, Buttons, Card },
+  async asyncData() {
+    return {
+      apilist: await $nuxt.$api.apilist_json.$get()
+    }
+  }
 })
-export default class extends Vue {}
+export default class extends Vue {
+  apilist: Api[] = []
+}
 </script>
 
 <style scoped>
