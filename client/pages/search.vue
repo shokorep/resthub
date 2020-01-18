@@ -55,7 +55,6 @@ import Card from '~/components/Card.vue'
 })
 export default class extends Vue {
   apilist: Api[] = []
-  categories: string[] = []
 
   get uniqueCategories() {
     return this.apilist
