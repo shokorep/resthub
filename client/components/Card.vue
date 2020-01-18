@@ -36,7 +36,7 @@ export default class extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 .api-items-left {
   flex-grow: 1;
 }

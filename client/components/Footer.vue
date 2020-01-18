@@ -8,7 +8,7 @@
 export default {}
 </script>
 
-<style>
+<style scoped>
 .footer {
   width: 100%;
   height: 20px;
