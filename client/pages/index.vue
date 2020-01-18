@@ -71,5 +71,4 @@ export default class extends Vue {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(6, 1fr);
 }
-
 </style>
