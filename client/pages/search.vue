@@ -5,7 +5,7 @@
       <div class="side">
         <ul>
           <p class="category-title">Category</p>
-          <li v-for="item in categories" :key="item">
+          <li v-for="(item, index) in uniqueCategories" :key="index">
             <input type="checkbox" name="category" />{{ item }}
           </li>
         </ul>
@@ -24,7 +24,7 @@
           <Buttons />
         </div>
         <div class="search-result-body">
-          <div v-for="api in apilist" :key="api" class="card">
+          <div v-for="(api, index) in apilist" :key="index" class="card">
             <Card :api="api" />
           </div>
         </div>
@@ -39,9 +39,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-
 import { Api } from '~/apis/apilist.json'
-
 import Header from '~/components/Header.vue'
 import Footer from '~/components/Footer.vue'
 import Buttons from '~/components/Buttons.vue'
@@ -57,21 +55,12 @@ import Card from '~/components/Card.vue'
 })
 export default class extends Vue {
   apilist: Api[] = []
-  categories: string[] = []
 
-  makeCategoriesUnique() {
-    const notUniqueCategories: string[][] = []
-    this.apilist.forEach((api) => {
-      notUniqueCategories.push(api.category)
-    })
-    const categories: string[] = notUniqueCategories
+  get uniqueCategories() {
+    return this.apilist
+      .map((api) => api.category)
       .flat()
       .filter((element, index, array) => array.indexOf(element) === index)
-    this.categories = categories
-  }
-
-  mounted() {
-    this.makeCategoriesUnique()
   }
 }
 </script>
