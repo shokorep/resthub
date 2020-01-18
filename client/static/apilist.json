@@ -6,7 +6,7 @@
     "category": ["SNS", "example2", "example3"],
     "updated": "a month ago",
     "numberOfDownloads": 12345,
-    "icon": "../facebook.png"
+    "icon": "/facebook.png"
   },
   {
     "apiName": "test2 API",
@@ -15,7 +15,7 @@
     "category": ["SNS", "example4", "example5"],
     "updated": "a month ago",
     "numberOfDownloads": 12345,
-    "icon": "../dummy.png"
+    "icon": "/dummy.png"
   },
   {
     "apiName": "Product Advertising API",
@@ -24,7 +24,7 @@
     "category": ["affiliate", "example2", "example6"],
     "updated": "a month ago",
     "numberOfDownloads": 12345,
-    "icon": "../dummy.png"
+    "icon": "/dummy.png"
   },
   {
     "apiName": "test4 API",
@@ -33,7 +33,7 @@
     "category": ["example1", "example4", "example7"],
     "updated": "a month ago",
     "numberOfDownloads": 12345,
-    "icon": "../dummy.png"
+    "icon": "/dummy.png"
   },
   {
     "apiName": "test5 API",
@@ -42,6 +42,6 @@
     "category": ["example2", "example5", "example8"],
     "updated": "a month ago",
     "numberOfDownloads": 12345,
-    "icon": "../dummy.png"
+    "icon": "/dummy.png"
   }
 ]
