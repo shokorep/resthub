@@ -25,7 +25,9 @@
         </div>
         <div class="search-result-body">
           <div v-for="(api, index) in apilist" :key="index" class="card">
-            <Card :api="api" />
+            <a :href="`/api?apiServiceId=${api.apiServiceId}`">
+              <Card :api="api" />
+            </a>
           </div>
         </div>
         <div class="search-result-footer">
@@ -135,6 +137,12 @@ export default class extends Vue {
 }
 .card:nth-child(even) {
   background-color: #f7f7f7;
+}
+.card a {
+  width: 100%;
+  height: 100%;
+  color: #646464;
+  text-decoration: none;
 }
 
 /* atoms */
