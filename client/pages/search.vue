@@ -87,6 +87,7 @@ export default class extends Vue {
 
 .body .main .search-result-header .number-of-hits {
   font-size: 22px;
+  font-weight: 500;
 }
 
 .search-result-body {
