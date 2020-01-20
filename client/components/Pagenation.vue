@@ -1,13 +1,6 @@
 <template>
-  <div class="buttons">
-    <button><p>1</p></button>
-    <button><p>2</p></button>
-    <button><p>3</p></button>
-    <p>...</p>
-    <button><p>56</p></button>
-    <button><p>>></p></button>
-  </div>
-</template>
+  <v-pagination v-model="page" :length="15" :total-visible="4"></v-pagination
+></template>
 
 <script lang="ts">
 export default {}
