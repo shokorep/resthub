@@ -33,6 +33,8 @@ export default class extends Vue {
   position: fixed;
   top: 65px;
   left: 0;
+  z-index: 1;
+
   width: 200px;
   height: 100%;
   padding: 30px 20px;
