@@ -10,7 +10,7 @@
         dense
       />
       <div class="search-result-header">
-        <div class="number-of-hits">345 apis found</div>
+        <div class="number-of-hits"><span>345</span> apis found</div>
         <Pagination />
       </div>
       <div class="search-result-body">
@@ -70,9 +70,14 @@ export default class extends Vue {
   margin-bottom: 15px;
 }
 
-.contents-area .search-result-header .number-of-hits {
-  font-size: 22px;
+.number-of-hits {
+  font-size: 13pt;
   font-weight: 500;
+}
+
+.number-of-hits > span {
+  margin-right: 3px;
+  font-size: 16pt;
 }
 
 .search-result-body {
