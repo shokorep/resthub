@@ -45,18 +45,6 @@ export default class extends Vue {
   border-bottom: 0;
 }
 
-/* .api-items-left {
-  flex-grow: 1;
-} */
-
-/* .api-items-right {
-  width: 100px;
-} */
-
-/* .api-items-left > div {
-  margin-bottom: 10px;
-} */
-
 .api-title {
   display: flex;
   align-items: flex-end;
@@ -68,8 +56,9 @@ export default class extends Vue {
 .api-title > .logo {
   width: 35px;
   height: 35px;
-  margin-right: 8px;
+  margin-right: 10px;
   text-align: right;
+  background: #fff;
 }
 
 .api-title > .logo > img {
@@ -106,9 +95,6 @@ export default class extends Vue {
 }
 
 .api-details .owner {
-  font-size: 13pt;
+  font-size: 12pt;
 }
-
-/* .api-details .updated {
-} */
 </style>

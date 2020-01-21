@@ -13,9 +13,7 @@ export default {}
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 20px;
-  padding-bottom: 10px;
-  padding-left: 65px;
+  padding-left: 200px;
   text-align: center;
 }
 

@@ -1,32 +1,24 @@
 <template>
   <div class="search-container">
     <side-bar :apilist="apilist" />
-    <div class="body">
-      <div class="main">
-        <v-text-field
-          label="Please enter keywords to search APIs"
-          prepend-inner-icon="mdi-magnify"
-          single-line
-          outlined
-          dense
-        ></v-text-field>
-        <div class="search-result-header">
-          <div class="number-of-hits">345 apis found</div>
-          <div><Pagenation /></div>
-        </div>
-        <div class="search-result-body">
-          <div
-            v-for="(api, index) in apilist"
-            :key="index"
-            class="card-wrapper"
-          >
-            <Card :api="api" />
-          </div>
-        </div>
-        <div class="search-result-footer">
-          <Pagenation />
+    <div class="contents-area">
+      <v-text-field
+        label="Please enter keywords to search APIs"
+        prepend-inner-icon="mdi-magnify"
+        single-line
+        outlined
+        dense
+      />
+      <div class="search-result-header">
+        <div class="number-of-hits">345 apis found</div>
+        <Pagination />
+      </div>
+      <div class="search-result-body">
+        <div v-for="(api, index) in apilist" :key="index" class="card-wrapper">
+          <Card :api="api" />
         </div>
       </div>
+      <Pagination />
     </div>
   </div>
 </template>
@@ -34,12 +26,12 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Api } from '~/apis/apilist.json'
-import Pagenation from '~/components/Pagenation.vue'
+import Pagination from '~/components/Pagination.vue'
 import Card from '~/components/Card.vue'
 import SideBar from '~/components/SideBar.vue'
 
 @Component({
-  components: { Pagenation, Card, SideBar },
+  components: { Pagination, Card, SideBar },
   async asyncData() {
     return {
       apilist: await $nuxt.$api.apilist_json.$get()
@@ -66,26 +58,19 @@ export default class extends Vue {
   background: #fff;
 }
 
-.body {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 65px 0 0 200px;
-}
-
-.body .main {
-  flex-grow: 1;
-  min-width: 400px;
+.contents-area {
   padding: 30px;
+  margin: 65px 0 60px 200px;
 }
 
-.body .main .search-result-header {
+.search-result-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
 }
 
-.body .main .search-result-header .number-of-hits {
+.contents-area .search-result-header .number-of-hits {
   font-size: 22px;
   font-weight: 500;
 }
@@ -97,10 +82,6 @@ export default class extends Vue {
 
 .card-wrapper:nth-child(even) {
   background-color: #f7f7f7;
-}
-
-.body .main .search-result-footer {
-  margin-bottom: 30px;
 }
 
 /* atoms */
