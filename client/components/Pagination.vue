@@ -5,5 +5,11 @@
 </template>
 
 <script lang="ts">
-export default {}
+export default {
+  data() {
+    return {
+      page: 1
+    }
+  }
+}
 </script>

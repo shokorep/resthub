@@ -15,6 +15,7 @@ export default {}
   width: 100%;
   padding-left: 200px;
   text-align: center;
+  background: #fff;
 }
 
 .copyright > img {
