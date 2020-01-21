@@ -17,7 +17,7 @@ import { Api } from '~/apis/apilist.json'
 
 @Component({})
 export default class extends Vue {
-  @Prop({ type: Object, required: true }) apilist!: Api[]
+  @Prop({ type: Array, required: true }) apilist!: Api[]
 
   get uniqueCategories() {
     return this.apilist

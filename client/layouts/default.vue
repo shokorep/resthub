@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <Header />
-    <side-bar />
     <nuxt />
     <Footer />
   </v-app>
