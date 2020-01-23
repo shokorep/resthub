@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <p class="copyright">©︎aspidajs</p>
+    <div class="copyright"><img src="/aspida.png" alt="" /></div>
   </div>
 </template>
 
@@ -10,12 +10,16 @@ export default {}
 
 <style scoped>
 .footer {
+  position: absolute;
+  bottom: 0;
   width: 100%;
-  height: 20px;
-  padding: 10px;
+  padding-left: 200px;
   text-align: center;
+  background: #fff;
 }
-.footer .copyright {
-  font-size: 10pt;
+
+.copyright > img {
+  width: 100px;
+  height: auto;
 }
 </style>

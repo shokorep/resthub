@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="card-container">
     <div class="api-items-left">
-      <div class="api-header">
+      <div class="api-title">
         <div class="logo">
           <img :src="api.icon" alt="" />
         </div>
@@ -15,9 +15,9 @@
           {{ category }}
         </span>
       </div>
-      <div class="api-footer">
-        <span class="owner">{{ api.owner }}</span>
-        <span>updated: {{ api.updated }}</span>
+      <div class="api-details">
+        <div class="owner">{{ api.owner }}</div>
+        <div class="updated">updated: {{ api.updated }}</div>
       </div>
     </div>
     <div class="api-items-right">
@@ -37,45 +37,64 @@ export default class extends Vue {
 </script>
 
 <style scoped>
-.api-items-left {
-  flex-grow: 1;
+.card-container {
+  display: flex;
+  padding: 20px;
+  font-size: 11pt;
+  border: thin solid #c0c0c0;
+  border-bottom: 0;
 }
-.api-items-right {
-  width: 100px;
-}
-.api-items-left > div {
-  margin: 15px 0;
-}
-.api-header {
+
+.api-title {
   display: flex;
   align-items: flex-end;
   justify-content: left;
+  margin-bottom: 10px;
   font-size: 16pt;
 }
-.api-header > .logo {
-  width: 40px;
-  height: 40px;
+
+.api-title > .logo {
+  width: 35px;
+  height: 35px;
   margin-right: 10px;
   text-align: right;
+  background: #fff;
 }
-.api-header > .logo > img {
+
+.api-title > .logo > img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  vertical-align: middle;
   border-radius: 5px;
 }
+
+.api-discription {
+  margin-bottom: 10px;
+}
+
+.api-category {
+  margin-bottom: 10px;
+}
+
 .api-category > span {
-  display: inline;
-  padding: 0 5px;
+  padding: 2px 8px;
   margin-right: 5px;
-  font-size: 10pt;
+  font-size: 9pt;
   color: #fff;
   background-color: #628bdd;
-  border-radius: 2pt;
+  border-radius: 4px;
 }
-.api-footer > span {
+
+.api-details {
+  display: flex;
+  align-items: flex-end;
+}
+
+.api-details > div {
   margin-right: 20px;
 }
-.api-footer > .owner {
-  font-size: 14pt;
+
+.api-details .owner {
+  font-size: 12pt;
 }
 </style>
