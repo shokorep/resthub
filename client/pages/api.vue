@@ -2,15 +2,26 @@
   <div class="container">
     <Header />
     <div class="body">
-      <div class="side"></div>
-      <div class="main"></div>
+      <div class="side">
+        <p v-for="endpoint in endpoints" :key="endpoint">
+          {{ endpoint }}
+        </p>
+      </div>
+      <div class="main">
+        <p>{{ apiDoc.info.title }}</p>
+        <p>{{ apiDoc.info.version }}</p>
+        <p style="word-wrap:break-word; white-space:pre-wrap;">
+          {{ apiDoc.info.description }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-// import { ApiDoc } from '~/apis/apidocs.json'
+import SwaggerParser from 'swagger-parser'
+import { OpenAPI, OpenAPIV3 } from 'openapi-types'
 import Header from '~/components/Header.vue'
 
 @Component({
@@ -18,17 +29,36 @@ import Header from '~/components/Header.vue'
 
   async asyncData({ route }) {
     const apiServiceId = route.query.apiServiceId
+    const isV3 = (openapi: OpenAPI.Document): openapi is OpenAPIV3.Document =>
+      'openapi' in openapi
+    const openapi =
+      (await SwaggerParser.parse(`/openApiSpec/${apiServiceId}.json`, {
+        parse: { json: true }
+      })) || {}
+    const openapiV3: OpenAPIV3.Document = isV3(openapi)
+      ? openapi
+      : {
+          info: {
+            title: '',
+            version: '',
+            description: ''
+          },
+          openapi: '3.0.0',
+          paths: {},
+          components: {},
+          tags: []
+        }
 
     return {
-      apiDoc: (
-        (await $nuxt.$api.apidocs_json.$get()).find(
-          (apiDoc) => apiDoc.apiServiceId === apiServiceId
-        ) || { apiDoc: [] }
-      ).apiDocument
+      apiDoc: openapiV3,
+      endpoints: Object.keys(openapiV3.paths)
     }
   }
 })
-export default class extends Vue {}
+export default class extends Vue {
+  apiDoc!: OpenAPIV3.Document
+  endpoints!: string[]
+}
 </script>
 
 <style scoped>
