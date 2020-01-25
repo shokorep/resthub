@@ -1,19 +1,32 @@
 <template>
-  <div class="container">
-    <Header />
-    <div class="body">
-      <div class="side">
-        <p v-for="endpoint in endpoints" :key="endpoint">
-          {{ endpoint }}
-        </p>
+  <div class="api-container">
+    <div class="side">
+      <v-text-field
+        label="Keywords"
+        prepend-inner-icon="mdi-magnify"
+        single-line
+        outlined
+        dense
+      />
+      <p>Info</p>
+      <p>Tags</p>
+      <p>Servers</p>
+      <p>Paths</p>
+      <!-- ここから下をどうグルーピングさせるか課題 -->
+      <div v-for="(tag, index) in apiDoc.tags" :key="index">
+        {{ tag.name }}
       </div>
-      <div class="main">
-        <p>{{ apiDoc.info.title }}</p>
-        <p>{{ apiDoc.info.version }}</p>
-        <p style="word-wrap:break-word; white-space:pre-wrap;">
-          {{ apiDoc.info.description }}
-        </p>
-      </div>
+      <p v-for="endpoint in endpoints" :key="endpoint">
+        {{ endpoint }}
+      </p>
+    </div>
+    <div class="main">
+      {{ endpointsGroupByTags }}
+      <!-- <p>{{ apiDoc.info.title }}</p>
+      <p>{{ apiDoc.info.version }}</p>
+      <p style="word-wrap:break-word; white-space:pre-wrap;">
+        {{ apiDoc.info.description }}
+      </p> -->
     </div>
   </div>
 </template>
@@ -22,11 +35,8 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import SwaggerParser from 'swagger-parser'
 import { OpenAPI, OpenAPIV3 } from 'openapi-types'
-import Header from '~/components/Header.vue'
 
 @Component({
-  components: { Header },
-
   async asyncData({ route }) {
     const apiServiceId = route.query.apiServiceId
     const isV3 = (openapi: OpenAPI.Document): openapi is OpenAPIV3.Document =>
@@ -46,7 +56,7 @@ import Header from '~/components/Header.vue'
           openapi: '3.0.0',
           paths: {},
           components: {},
-          tags: []
+          tags: [{ name: '', description: '' }]
         }
 
     return {
@@ -58,32 +68,48 @@ import Header from '~/components/Header.vue'
 export default class extends Vue {
   apiDoc!: OpenAPIV3.Document
   endpoints!: string[]
+
+  get endpointsGroupByTags() {
+    const tagsInPathObject = Object.entries(this.apiDoc.paths)
+      .map((endpoint) => Object.values(endpoint[1]))
+      .flat()
+      .map((e) => e.tags)
+      .flat()
+
+    const tagsInTagsObject = this.apiDoc.tags!.map((e) => e.name) || []
+
+    const uniqueTags = tagsInTagsObject
+      .concat(tagsInPathObject)
+      .filter((element, index, array) => array.indexOf(element) === index)
+
+    return uniqueTags
+  }
 }
 </script>
 
 <style scoped>
 .container {
   /* Caution: `min-height: 100vh` does not work in IE 11 */
-  height: 100vh;
-  margin: 0 auto;
   color: #646464;
   text-align: left;
+  background: #fff;
 }
 
-.body {
-  display: flex;
-  flex-wrap: wrap;
+.side {
+  position: fixed;
+  top: 65px;
+  left: 0;
+  z-index: 1;
+
+  width: 200px;
+  height: 100%;
+  padding: 30px 20px;
+  background: #fff;
+  border-right: thin solid #c0c0c0;
 }
 
-.body .side {
-  min-width: 200px;
-  padding: 100px 20px;
-  border-right: thin solid;
-  border-right-color: #c0c0c0;
-}
-.body .main {
-  flex-grow: 1;
-  min-width: 400px;
+.main {
   padding: 30px;
+  margin: 65px 0 60px 200px;
 }
 </style>
