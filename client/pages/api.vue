@@ -12,83 +12,93 @@
       <p>Tags</p>
       <p>Servers</p>
       <p>Paths</p>
-      <!-- ここから下をどうグルーピングさせるか課題 -->
-      <div v-for="(tag, index) in apiDoc.tags" :key="index">
-        {{ tag.name }}
-      </div>
-      <p v-for="endpoint in endpoints" :key="endpoint">
-        {{ endpoint }}
-      </p>
     </div>
     <div class="main">
-      {{ endpointsGroupByTags }}
-      <!-- <p>{{ apiDoc.info.title }}</p>
-      <p>{{ apiDoc.info.version }}</p>
-      <p style="word-wrap:break-word; white-space:pre-wrap;">
-        {{ apiDoc.info.description }}
-      </p> -->
+      <div>Info</div>
+      <div>{{ apiDoc.info.title }}</div>
+      <div>{{ apiDoc.info.version }}</div>
+      <div>{{ apiDoc.info.description }}</div>
+      <div>Servers</div>
+      <select name="servers">
+        <option
+          v-for="(server, index) in apiDoc.servers"
+          :key="index"
+          :value="server.url"
+        >
+          {{ server.url }}
+        </option>
+      </select>
+      <div v-for="(group, gIndex) in endpointsGroupByTags" :key="gIndex">
+        {{ group.tag }}
+        <div v-for="(detail, index) in group.pathMethod" :key="index">
+          <span>{{ detail.method }}</span>
+          <span>{{ detail.path }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
+// This script don't use TypeScript temporarily.
 import { Component, Vue } from 'nuxt-property-decorator'
 import SwaggerParser from 'swagger-parser'
-import { OpenAPI, OpenAPIV3 } from 'openapi-types'
 
 @Component({
   async asyncData({ route }) {
     const apiServiceId = route.query.apiServiceId
-    const isV3 = (openapi: OpenAPI.Document): openapi is OpenAPIV3.Document =>
-      'openapi' in openapi
-    const openapi =
-      (await SwaggerParser.parse(`/openApiSpec/${apiServiceId}.json`, {
+    const openapi = await SwaggerParser.parse(
+      `/openApiSpec/${apiServiceId}.json`,
+      {
         parse: { json: true }
-      })) || {}
-    const openapiV3: OpenAPIV3.Document = isV3(openapi)
-      ? openapi
-      : {
-          info: {
-            title: '',
-            version: '',
-            description: ''
-          },
-          openapi: '3.0.0',
-          paths: {},
-          components: {},
-          tags: [{ name: '', description: '' }]
-        }
-
-    return {
-      apiDoc: openapiV3,
-      endpoints: Object.keys(openapiV3.paths)
-    }
+      }
+    )
+    return { apiDoc: openapi }
   }
 })
 export default class extends Vue {
-  apiDoc!: OpenAPIV3.Document
-  endpoints!: string[]
+  apiDoc
 
   get endpointsGroupByTags() {
+    // get UniqueTags
     const tagsInPathObject = Object.entries(this.apiDoc.paths)
-      .map((endpoint) => Object.values(endpoint[1]))
-      .flat()
-      .map((e) => e.tags)
-      .flat()
-
-    const tagsInTagsObject = this.apiDoc.tags!.map((e) => e.name) || []
-
-    const uniqueTags = tagsInTagsObject
+      .flatMap((endpoint) => Object.values(endpoint[1]))
+      .flatMap((e) => e.tags)
+    const tagsInTagsObject = this.apiDoc.tags.map((e) => e.name)
+    const mergedAndUniqueTags = tagsInTagsObject
       .concat(tagsInPathObject)
       .filter((element, index, array) => array.indexOf(element) === index)
-
-    return uniqueTags
+    // reformat ApiDoc
+    const ApiDoc2Arr = Object.entries(this.apiDoc.paths).map((e) => [
+      e[0],
+      Object.entries(e[1])
+    ])
+    const apiDocArray = ApiDoc2Arr.map((e) => {
+      const objects = e[1].map((elem) => {
+        return { path: e[0], method: elem[0], details: elem[1] }
+      })
+      return objects
+    }).flat()
+    // sort ApiDoc by path(a->z) and group ApiDoc by UniqueTags
+    const newApiDoc = mergedAndUniqueTags.map((tag) => {
+      return {
+        tag,
+        pathMethod: [...apiDocArray]
+          .sort((a, b) => {
+            const _a = a.path.toString().toLowerCase()
+            const _b = b.path.toString().toLowerCase()
+            return _a < _b ? -1 : 1
+          })
+          .filter((element) => element.details.tags.includes(tag))
+      }
+    })
+    return newApiDoc
   }
 }
 </script>
 
 <style scoped>
-.container {
+.api-container {
   /* Caution: `min-height: 100vh` does not work in IE 11 */
   color: #646464;
   text-align: left;
