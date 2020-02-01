@@ -66,8 +66,6 @@ export default class extends Vue {
   }
 
   search() {
-    if (!this.keyword) return
-
     const searchWords: {
       service: string
       owner: string
