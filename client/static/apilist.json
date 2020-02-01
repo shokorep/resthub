@@ -1,6 +1,6 @@
 [
   {
-    "apiName": "test1 API",
+    "service": "test1 API",
     "owner": "Facebook.Inc",
     "discription": "apis description will be appear here",
     "category": ["SNS", "example2", "example3"],
@@ -9,7 +9,7 @@
     "icon": "/facebook.png"
   },
   {
-    "apiName": "test2 API",
+    "service": "test2 API",
     "owner": "Twitter.Inc",
     "discription": "apis description will be appear here",
     "category": ["SNS", "example4", "example5"],
@@ -18,7 +18,7 @@
     "icon": "/instagram.png"
   },
   {
-    "apiName": "Product Advertising API",
+    "service": "Product Advertising API",
     "owner": "Amazon.Inc",
     "discription": "apis description will be appear here",
     "category": ["affiliate", "example2", "example6"],
@@ -27,7 +27,7 @@
     "icon": "/twitter.jpg"
   },
   {
-    "apiName": "test4 API",
+    "service": "test4 API",
     "owner": "YouTube.Inc",
     "discription": "apis description will be appear here",
     "category": ["example1", "example4", "example7"],
@@ -36,7 +36,7 @@
     "icon": "/youtube.jpg"
   },
   {
-    "apiName": "test5 API",
+    "service": "test5 API",
     "owner": "EEE.Inc",
     "discription": "apis description will be appear here",
     "category": ["example2", "example5", "example8"],
@@ -45,7 +45,7 @@
     "icon": "/dummy.png"
   },
   {
-    "apiName": "test5 API",
+    "service": "test5 API",
     "owner": "Amazon.Inc",
     "discription": "apis description will be appear here",
     "category": ["example2", "example5", "example8"],
@@ -54,7 +54,7 @@
     "icon": "/dummy.png"
   },
   {
-    "apiName": "test6 API",
+    "service": "test6 API",
     "owner": "EEE.Inc",
     "discription": "apis description will be appear here",
     "category": ["example2", "example5", "example8"],
@@ -63,7 +63,7 @@
     "icon": "/amazon.jpg"
   },
   {
-    "apiName": "Google Developers",
+    "service": "Google Developers",
     "owner": "Google",
     "discription": "apis description will be appear here",
     "category": ["affiliate", "example2", "example6"],
@@ -72,7 +72,7 @@
     "icon": "/twitter.jpg"
   },
   {
-    "apiName": "Google Cloud",
+    "service": "Google Cloud",
     "owner": "Google",
     "discription": "apis description will be appear here",
     "category": ["affiliate", "example2", "example6"],

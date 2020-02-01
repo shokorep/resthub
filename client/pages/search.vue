@@ -97,7 +97,7 @@ export default class extends Vue {
     this.searchedApilist = JSON.parse(JSON.stringify(this.apilist))
     this.searchedApilist = this.searchedApilist.filter((i) => {
       if (
-        i.apiName.match(RegExp(searchWords.service, 'i')) &&
+        i.service.match(RegExp(searchWords.service, 'i')) &&
         i.owner.match(RegExp(searchWords.owner, 'i'))
       )
         return i
