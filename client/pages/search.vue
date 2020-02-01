@@ -3,18 +3,28 @@
     <side-bar :apilist="apilist" />
     <div class="contents-area">
       <v-text-field
+        v-model="keyword"
         label="Please enter keywords to search APIs"
+        placeholder="service: owner:"
         prepend-inner-icon="mdi-magnify"
         single-line
         outlined
         dense
+        @blur="search"
+        @keyup.enter="search"
       />
       <div class="search-result-header">
-        <div class="number-of-hits"><span>345</span> apis found</div>
+        <div class="number-of-hits">
+          <span>{{ searchedApilist.length }}</span> apis found
+        </div>
         <Pagination />
       </div>
       <div class="search-result-body">
-        <div v-for="(api, index) in apilist" :key="index" class="card-wrapper">
+        <div
+          v-for="(api, index) in searchedApilist"
+          :key="index"
+          class="card-wrapper"
+        >
           <Card :api="api" />
         </div>
       </div>
@@ -39,13 +49,63 @@ import SideBar from '~/components/SideBar.vue'
   }
 })
 export default class extends Vue {
+  keyword = ''
+  searchKey: string[] = ['service:', 'owner:']
   apilist: Api[] = []
+  searchedApilist: Api[] = []
 
   get uniqueCategories() {
     return this.apilist
       .map((api) => api.category)
       .flat()
       .filter((element, index, array) => array.indexOf(element) === index)
+  }
+
+  created() {
+    this.searchedApilist = this.apilist
+  }
+
+  search() {
+    if (!this.keyword) return
+
+    const searchWords: {
+      service: string
+      owner: string
+    } = { service: '', owner: '' }
+    const isExistService = Boolean(this.keyword.match(this.searchKey[0]))
+    const isExistOwner = Boolean(this.keyword.match(this.searchKey[1]))
+
+    if (isExistService && isExistOwner) {
+      const bgnService: number = this.keyword.indexOf(this.searchKey[0])
+      const bgnOwner: number = this.keyword.indexOf(this.searchKey[1])
+      const end: number = this.keyword.length
+      if (bgnService > bgnOwner) {
+        searchWords.service = this.pickWord(bgnService + 8, end)
+        searchWords.owner = this.pickWord(bgnOwner + 6, bgnService)
+      } else {
+        searchWords.owner = this.pickWord(bgnOwner + 6, end)
+        searchWords.service = this.pickWord(bgnService + 8, bgnOwner)
+      }
+    } else if (isExistService) {
+      const bgnService = this.keyword.indexOf(this.searchKey[0])
+      searchWords.service = this.pickWord(bgnService + 8, this.keyword.length)
+    } else if (isExistOwner) {
+      const bgnOwner = this.keyword.indexOf(this.searchKey[1])
+      searchWords.owner = this.pickWord(bgnOwner + 6, this.keyword.length)
+    }
+
+    this.searchedApilist = JSON.parse(JSON.stringify(this.apilist))
+    this.searchedApilist = this.searchedApilist.filter((i) => {
+      if (
+        i.apiName.match(RegExp(searchWords.service, 'i')) &&
+        i.owner.match(RegExp(searchWords.owner, 'i'))
+      )
+        return i
+    })
+  }
+
+  pickWord(st: number, end: number) {
+    return this.keyword.substring(st, end).trim()
   }
 }
 </script>

@@ -46,11 +46,38 @@
   },
   {
     "apiName": "test5 API",
+    "owner": "Amazon.Inc",
+    "discription": "apis description will be appear here",
+    "category": ["example2", "example5", "example8"],
+    "updated": "a month ago",
+    "numberOfDownloads": 12345,
+    "icon": "/dummy.png"
+  },
+  {
+    "apiName": "test6 API",
     "owner": "EEE.Inc",
     "discription": "apis description will be appear here",
     "category": ["example2", "example5", "example8"],
     "updated": "a month ago",
     "numberOfDownloads": 12345,
     "icon": "/amazon.jpg"
+  },
+  {
+    "apiName": "Google Developers",
+    "owner": "Google",
+    "discription": "apis description will be appear here",
+    "category": ["affiliate", "example2", "example6"],
+    "updated": "a month ago",
+    "numberOfDownloads": 12345,
+    "icon": "/twitter.jpg"
+  },
+  {
+    "apiName": "Google Cloud",
+    "owner": "Google",
+    "discription": "apis description will be appear here",
+    "category": ["affiliate", "example2", "example6"],
+    "updated": "a month ago",
+    "numberOfDownloads": 12345,
+    "icon": "/twitter.jpg"
   }
 ]
