@@ -13,11 +13,9 @@
         <div class="number-of-hits"><span>345</span> apis found</div>
         <Pagination />
       </div>
-      <div class="search-">
+      <div class="search-result-body">
         <div v-for="(api, index) in apilist" :key="index" class="card-wrapper">
-          <a :href="`/api?apiServiceId=${api.apiServiceId}`">
-            <Card :api="api" />
-          </a>
+          <Card :api="api" />
         </div>
       </div>
       <Pagination />
