@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <p class="app-name">RESThub</p>
+    <div class="app-name">RESThub</div>
   </div>
 </template>
 
@@ -10,13 +10,21 @@ export default {}
 
 <style scoped>
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
   width: 100%;
-  height: 80px;
-  padding: 10px;
-  color: #fff;
-  background-color: #234fa7;
+  height: 65px;
+  padding: 0 20px;
+  background: #234fa7;
+  box-shadow: 0 2px 5px #c0c0c0;
 }
+
 .header .app-name {
-  font-size: 30pt;
+  font-size: 30px;
+  color: #fff;
 }
 </style>
