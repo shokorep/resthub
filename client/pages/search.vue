@@ -15,7 +15,7 @@
       </div>
       <div class="search-result-body">
         <div v-for="(api, index) in apilist" :key="index" class="card-wrapper">
-          <a :href="`/api?apiServiceId=${api.apiServiceId}`">
+          <a :href="`/apiService?apiServiceId=${api.apiServiceId}`">
             <Card :api="api" />
           </a>
         </div>
