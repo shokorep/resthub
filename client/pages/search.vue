@@ -79,12 +79,6 @@ export default class extends Vue {
   margin-right: 3px;
   font-size: 16pt;
 }
-.card a {
-  width: 100%;
-  height: 100%;
-  color: #646464;
-  text-decoration: none;
-}
 
 .search-result-body {
   margin-bottom: 30px;
