@@ -14,26 +14,23 @@
       <p>Paths</p>
     </div>
     <div class="main">
-      <div>Info</div>
-      <div>{{ apiDoc.info.title }}</div>
-      <div>{{ apiDoc.info.version }}</div>
-      <div>{{ apiDoc.info.description }}</div>
-      <div>Servers</div>
-      <select name="servers">
-        <option
-          v-for="(server, index) in apiDoc.servers"
-          :key="index"
-          :value="server.url"
-        >
-          {{ server.url }}
-        </option>
-      </select>
-      <div v-for="(group, gIndex) in endpointsGroupByTags" :key="gIndex">
-        {{ group.tag }}
-        <div v-for="(detail, index) in group.pathMethod" :key="index">
-          <span>{{ detail.method }}</span>
-          <span>{{ detail.path }}</span>
-        </div>
+      <div class="titele-wapper">
+        <h1>{{ apiDoc.info.title }}</h1>
+        <div>{{ apiDoc.info.version }}</div>
+      </div>
+      <div class="info-wrapper">
+        <h2>Info</h2>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-html="$md.render(apiDoc.info.description)"></div>
+      </div>
+      <div class="servers-wrapper">
+        <h2>Servers</h2>
+        <v-select :items="apiDoc.servers" item-text="url" item-value="url">
+        </v-select>
+      </div>
+      <hr style="background-color:#646464" />
+      <div class="api-methods-wapper">
+        <h3 v-for="tag in uniqueTags" :key="tag">{{ tag }}</h3>
       </div>
     </div>
   </div>
@@ -41,10 +38,9 @@
 
 <script>
 // This script don't use TypeScript temporarily.
-import { Component, Vue } from 'nuxt-property-decorator'
 import SwaggerParser from 'swagger-parser'
 
-@Component({
+export default {
   async asyncData({ route }) {
     const apiServiceId = route.query.apiServiceId
     const openapi = await SwaggerParser.parse(
@@ -54,45 +50,23 @@ import SwaggerParser from 'swagger-parser'
       }
     )
     return { apiDoc: openapi }
-  }
-})
-export default class extends Vue {
-  apiDoc
-
-  get endpointsGroupByTags() {
-    // get UniqueTags
-    const tagsInPathObject = Object.entries(this.apiDoc.paths)
-      .flatMap((endpoint) => Object.values(endpoint[1]))
-      .flatMap((e) => e.tags)
-    const tagsInTagsObject = this.apiDoc.tags.map((e) => e.name)
-    const mergedAndUniqueTags = tagsInTagsObject
-      .concat(tagsInPathObject)
-      .filter((element, index, array) => array.indexOf(element) === index)
-    // reformat ApiDoc
-    const ApiDoc2Arr = Object.entries(this.apiDoc.paths).map((e) => [
-      e[0],
-      Object.entries(e[1])
-    ])
-    const apiDocArray = ApiDoc2Arr.map((e) => {
-      const objects = e[1].map((elem) => {
-        return { path: e[0], method: elem[0], details: elem[1] }
-      })
-      return objects
-    }).flat()
-    // sort ApiDoc by path(a->z) and group ApiDoc by UniqueTags
-    const newApiDoc = mergedAndUniqueTags.map((tag) => {
-      return {
-        tag,
-        pathMethod: [...apiDocArray]
-          .sort((a, b) => {
-            const _a = a.path.toString().toLowerCase()
-            const _b = b.path.toString().toLowerCase()
-            return _a < _b ? -1 : 1
-          })
-          .filter((element) => element.details.tags.includes(tag))
-      }
-    })
-    return newApiDoc
+  },
+  data() {
+    return {
+      apiDoc: {}
+    }
+  },
+  computed: {
+    uniqueTags() {
+      const tagsInPathsObject = Object.entries(this.apiDoc.paths)
+        .flatMap((endpoint) => Object.values(endpoint[1]))
+        .flatMap((e) => e.tags)
+      const tagsInTagsObject = this.apiDoc.tags.map((e) => e.name)
+      // merge and get unique
+      return tagsInTagsObject
+        .concat(tagsInPathsObject)
+        .filter((element, index, array) => array.indexOf(element) === index)
+    }
   }
 }
 </script>
@@ -121,5 +95,8 @@ export default class extends Vue {
 .main {
   padding: 30px;
   margin: 65px 0 60px 200px;
+}
+.api-methods-wapper {
+  padding: 20px 0;
 }
 </style>
