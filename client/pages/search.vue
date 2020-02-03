@@ -66,11 +66,10 @@ export default class extends Vue {
   }
 
   search() {
-    const searchWords = { service: '', owner: '' }
+    const searchWords = { service: '', owner: '', other: '' }
     const startService = this.keyword.indexOf(this.searchKey[0])
     const startOwner = this.keyword.indexOf(this.searchKey[1])
     const end = this.keyword.length
-
     if (startService > -1 && startOwner > -1) {
       if (startService > startOwner) {
         searchWords.service = this.pickWord(startService + 8, end)
@@ -80,18 +79,27 @@ export default class extends Vue {
         searchWords.service = this.pickWord(startService + 8, startOwner)
       }
     } else if (startService > -1) {
-      searchWords.service = this.pickWord(startService + 8, this.keyword.length)
+      searchWords.service = this.pickWord(startService + 8, end)
     } else if (startOwner > -1) {
-      searchWords.owner = this.pickWord(startOwner + 6, this.keyword.length)
+      searchWords.owner = this.pickWord(startOwner + 6, end)
+    } else {
+      searchWords.other = this.pickWord(0, end)
     }
 
     this.searchedApilist = JSON.parse(JSON.stringify(this.apilist))
     this.searchedApilist = this.searchedApilist.filter((i) => {
-      if (
+      if (searchWords.other) {
+        if (
+          i.service.match(RegExp(searchWords.other, 'i')) ||
+          i.owner.match(RegExp(searchWords.other, 'i'))
+        )
+          return i
+      } else if (
         i.service.match(RegExp(searchWords.service, 'i')) &&
         i.owner.match(RegExp(searchWords.owner, 'i'))
-      )
+      ) {
         return i
+      }
     })
   }
 
