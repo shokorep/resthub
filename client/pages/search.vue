@@ -50,7 +50,7 @@ import SideBar from '~/components/SideBar.vue'
 })
 export default class extends Vue {
   keyword = ''
-  searchKey: string[] = ['service:', 'owner:']
+  searchKey = ['service:', 'owner:']
   apilist: Api[] = []
   searchedApilist: Api[] = []
 
@@ -66,30 +66,23 @@ export default class extends Vue {
   }
 
   search() {
-    const searchWords: {
-      service: string
-      owner: string
-    } = { service: '', owner: '' }
-    const isExistService = Boolean(this.keyword.match(this.searchKey[0]))
-    const isExistOwner = Boolean(this.keyword.match(this.searchKey[1]))
+    const searchWords = { service: '', owner: '' }
+    const startService = this.keyword.indexOf(this.searchKey[0])
+    const startOwner = this.keyword.indexOf(this.searchKey[1])
+    const end = this.keyword.length
 
-    if (isExistService && isExistOwner) {
-      const bgnService: number = this.keyword.indexOf(this.searchKey[0])
-      const bgnOwner: number = this.keyword.indexOf(this.searchKey[1])
-      const end: number = this.keyword.length
-      if (bgnService > bgnOwner) {
-        searchWords.service = this.pickWord(bgnService + 8, end)
-        searchWords.owner = this.pickWord(bgnOwner + 6, bgnService)
+    if (startService > -1 && startOwner > -1) {
+      if (startService > startOwner) {
+        searchWords.service = this.pickWord(startService + 8, end)
+        searchWords.owner = this.pickWord(startOwner + 6, startService)
       } else {
-        searchWords.owner = this.pickWord(bgnOwner + 6, end)
-        searchWords.service = this.pickWord(bgnService + 8, bgnOwner)
+        searchWords.owner = this.pickWord(startOwner + 6, end)
+        searchWords.service = this.pickWord(startService + 8, startOwner)
       }
-    } else if (isExistService) {
-      const bgnService = this.keyword.indexOf(this.searchKey[0])
-      searchWords.service = this.pickWord(bgnService + 8, this.keyword.length)
-    } else if (isExistOwner) {
-      const bgnOwner = this.keyword.indexOf(this.searchKey[1])
-      searchWords.owner = this.pickWord(bgnOwner + 6, this.keyword.length)
+    } else if (startService > -1) {
+      searchWords.service = this.pickWord(startService + 8, this.keyword.length)
+    } else if (startOwner > -1) {
+      searchWords.owner = this.pickWord(startOwner + 6, this.keyword.length)
     }
 
     this.searchedApilist = JSON.parse(JSON.stringify(this.apilist))
@@ -102,8 +95,8 @@ export default class extends Vue {
     })
   }
 
-  pickWord(st: number, end: number) {
-    return this.keyword.substring(st, end).trim()
+  pickWord(start: number, end: number) {
+    return this.keyword.substring(start, end).trim()
   }
 }
 </script>
