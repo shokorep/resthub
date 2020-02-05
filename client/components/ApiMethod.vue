@@ -23,8 +23,9 @@
         <h6>Parameters</h6>
         <table>
           <tr>
-            <th>Name</th>
-            <th>Description</th>
+            <th style="width: 30%;">Name</th>
+            <th style="width: 20%;">Type</th>
+            <th style="width: 50%;">Description</th>
           </tr>
           <tr
             v-for="(parameter, index) in flatPathsObj.opeObj.parameters"
@@ -38,6 +39,9 @@
                 style="margin: 0; font-size: 10px; color: #f00;"
                 >*requierd</span
               >
+            </td>
+            <td>
+              <p>{{ parameter.schema.type }}</p>
             </td>
             <td>
               <v-text-field
