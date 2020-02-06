@@ -17,7 +17,7 @@
         <div v-for="(api, index) in apilist" :key="index" class="card-wrapper">
           <nuxt-link
             class="link"
-            to="`/apiService?apiServiceId=${api.apiServiceId}`"
+            :to="`/apiService?apiServiceId=${api.apiServiceId}`"
           >
             <Card :api="api" />
           </nuxt-link>
