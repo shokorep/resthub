@@ -15,9 +15,12 @@
       </div>
       <div class="search-result-body">
         <div v-for="(api, index) in apilist" :key="index" class="card-wrapper">
-          <a :href="`/apiService?apiServiceId=${api.apiServiceId}`">
+          <nuxt-link
+            class="link"
+            to="`/apiService?apiServiceId=${api.apiServiceId}`"
+          >
             <Card :api="api" />
-          </a>
+          </nuxt-link>
         </div>
       </div>
       <Pagination />
@@ -91,7 +94,7 @@ export default class extends Vue {
   background-color: #f7f7f7;
 }
 
-.card-wrapper > a {
+.link {
   width: 100%;
   height: 100%;
   color: #646464;
