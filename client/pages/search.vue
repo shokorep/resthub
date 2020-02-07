@@ -62,49 +62,56 @@ export default class extends Vue {
   }
 
   created() {
-    this.searchedApilist = this.apilist
+    this.initializeApiList()
   }
 
   search() {
     const searchWords = { service: '', owner: '', other: '' }
-    const startService = this.keyword.indexOf(this.searchKey[0])
-    const startOwner = this.keyword.indexOf(this.searchKey[1])
+    const serviceHead = this.keyword.indexOf(this.searchKey[0])
+    const ownerHead = this.keyword.indexOf(this.searchKey[1])
+    const serviceWordHead = serviceHead + this.searchKey[0].length
+    const ownerWordHead = ownerHead + this.searchKey[1].length
     const end = this.keyword.length
-    if (startService > -1 && startOwner > -1) {
-      if (startService > startOwner) {
-        searchWords.service = this.pickWord(startService + 8, end)
-        searchWords.owner = this.pickWord(startOwner + 6, startService)
+    if (serviceHead > -1 && ownerHead > -1) {
+      if (serviceHead > ownerHead) {
+        searchWords.service = this.pickWord(serviceWordHead, end)
+        searchWords.owner = this.pickWord(ownerWordHead, serviceHead)
       } else {
-        searchWords.owner = this.pickWord(startOwner + 6, end)
-        searchWords.service = this.pickWord(startService + 8, startOwner)
+        searchWords.owner = this.pickWord(ownerWordHead, end)
+        searchWords.service = this.pickWord(serviceWordHead, ownerHead)
       }
-    } else if (startService > -1) {
-      searchWords.service = this.pickWord(startService + 8, end)
-    } else if (startOwner > -1) {
-      searchWords.owner = this.pickWord(startOwner + 6, end)
+    } else if (serviceHead > -1) {
+      searchWords.service = this.pickWord(serviceWordHead, end)
+    } else if (ownerHead > -1) {
+      searchWords.owner = this.pickWord(ownerWordHead, end)
     } else {
       searchWords.other = this.pickWord(0, end)
     }
 
-    this.searchedApilist = JSON.parse(JSON.stringify(this.apilist))
+    this.initializeApiList()
     this.searchedApilist = this.searchedApilist.filter((i) => {
-      if (searchWords.other) {
-        if (
-          i.service.match(RegExp(searchWords.other, 'i')) ||
-          i.owner.match(RegExp(searchWords.other, 'i'))
-        )
-          return i
-      } else if (
-        i.service.match(RegExp(searchWords.service, 'i')) &&
-        i.owner.match(RegExp(searchWords.owner, 'i'))
-      ) {
+      if (
+        (i.service.match(RegExp(searchWords.other, 'i')) ||
+          i.owner.match(RegExp(searchWords.other, 'i'))) &&
+        searchWords.other
+      )
         return i
-      }
+      if (
+        i.service.match(RegExp(searchWords.service, 'i')) &&
+        i.owner.match(RegExp(searchWords.owner, 'i')) &&
+        !searchWords.other
+      )
+        return i
     })
   }
 
-  pickWord(start: number, end: number) {
-    return this.keyword.substring(start, end).trim()
+  get pickWord() {
+    return (start: number, end: number) =>
+      this.keyword.substring(start, end).trim()
+  }
+
+  initializeApiList() {
+    this.searchedApilist = this.apilist
   }
 }
 </script>
