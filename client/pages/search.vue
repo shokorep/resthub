@@ -50,7 +50,6 @@ import SideBar from '~/components/SideBar.vue'
 })
 export default class extends Vue {
   keyword = ''
-  searchKey = ['service:', 'owner:']
   apilist: Api[] = []
   searchedApilist: Api[] = []
 
@@ -66,11 +65,12 @@ export default class extends Vue {
   }
 
   search() {
+    const searchKey = ['service:', 'owner:']
     const searchWords = { service: '', owner: '', other: '' }
-    const serviceHead = this.keyword.indexOf(this.searchKey[0])
-    const ownerHead = this.keyword.indexOf(this.searchKey[1])
-    const serviceWordHead = serviceHead + this.searchKey[0].length
-    const ownerWordHead = ownerHead + this.searchKey[1].length
+    const serviceHead = this.keyword.indexOf(searchKey[0])
+    const ownerHead = this.keyword.indexOf(searchKey[1])
+    const serviceWordHead = serviceHead + searchKey[0].length
+    const ownerWordHead = ownerHead + searchKey[1].length
     const end = this.keyword.length
     if (serviceHead > -1 && ownerHead > -1) {
       if (serviceHead > ownerHead) {
