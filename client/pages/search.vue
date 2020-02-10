@@ -25,7 +25,12 @@
           :key="index"
           class="card-wrapper"
         >
-          <Card :api="api" />
+          <nuxt-link
+            class="link"
+            :to="`/apiService?apiServiceId=${api.apiServiceId}`"
+          >
+            <Card :api="api" />
+          </nuxt-link>
         </div>
       </div>
       <Pagination />
@@ -153,6 +158,13 @@ export default class extends Vue {
 
 .card-wrapper:nth-child(even) {
   background-color: #f7f7f7;
+}
+
+.link {
+  width: 100%;
+  height: 100%;
+  color: #646464;
+  text-decoration: none;
 }
 
 /* atoms */
