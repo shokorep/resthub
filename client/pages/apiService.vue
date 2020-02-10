@@ -82,14 +82,12 @@ export default {
         e[0],
         Object.entries(e[1])
       ])
-      const flatPathsObj = arrayedPathsObj
-        .map((e) => {
-          const objects = e[1].map((elem) => {
-            return { path: e[0], method: elem[0], opeObj: elem[1] }
-          })
-          return objects
+      const flatPathsObj = arrayedPathsObj.flatMap((e) => {
+        const objects = e[1].map((elem) => {
+          return { path: e[0], method: elem[0], opeObj: elem[1] }
         })
-        .flat()
+        return objects
+      })
       // sort ApiDoc by path(a->z) and group ApiDoc by UniqueTags
       const flatPathsObjGroups = this.uniqueTags.map((tag) => {
         return {
