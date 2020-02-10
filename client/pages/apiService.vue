@@ -25,14 +25,22 @@
       </div>
       <div class="servers-wrapper">
         <h2>Servers</h2>
-        <v-select :items="apiDoc.servers" item-text="url" item-value="url">
+        <v-select
+          :items="apiDoc.servers"
+          item-text="url"
+          item-value="url"
+          outlined
+        >
         </v-select>
       </div>
       <hr style="background-color:#646464" />
       <div class="api-methods-wapper">
-        <div v-for="(group, gIndex) in flatPathsObjGroupsByTag" :key="gIndex">
+        <div v-for="(group, gIndex) in flatPathsObjGroups" :key="gIndex">
           <h3 class="api-tag">{{ group.tag }}</h3>
-          <div v-for="(flatPathsObj, index) in group.flatPathsObj" :key="index">
+          <div
+            v-for="(flatPathsObj, index) in group.arrOfFlatPathsObj"
+            :key="index"
+          >
             <api-method :flat-paths-obj="flatPathsObj" />
           </div>
         </div>
@@ -66,6 +74,28 @@ export default {
     }
   },
   computed: {
+    replacedApiDoc() {
+      const replace = (str) => {
+        // DQ means DoubleQuotation
+        const idxOf2ndDQ = str.indexOf(`"`, 1)
+        const refObj = str.slice(1, idxOf2ndDQ).split('/')
+        const repStr =
+          JSON.stringify(this.apiDoc[refObj[1]][refObj[2]][refObj[3]]).slice(
+            1,
+            -1
+          ) + str.slice(idxOf2ndDQ + 1)
+        return repStr
+      }
+      const replacedObj = (obj) => {
+        const arr = JSON.stringify(obj)
+          .split(`"$ref":`)
+          .map((str) => (str.startsWith(`"#/`) ? replace(str) : str))
+          .join('')
+        const _obj = JSON.parse(arr)
+        return arr.includes(`"$ref":`) ? replacedObj(_obj) : _obj
+      }
+      return replacedObj(this.apiDoc)
+    },
     uniqueTags() {
       const tagsInPathsObject = Object.entries(this.apiDoc.paths)
         .flatMap((endpoint) => Object.values(endpoint[1]))
@@ -76,23 +106,22 @@ export default {
         .concat(tagsInPathsObject)
         .filter((element, index, array) => array.indexOf(element) === index)
     },
-    flatPathsObjGroupsByTag() {
+    flatPathsObjGroups() {
       // reformat PathsObj
-      const arrayedPathsObj = Object.entries(this.apiDoc.paths).map((e) => [
-        e[0],
-        Object.entries(e[1])
-      ])
-      const flatPathsObj = arrayedPathsObj.flatMap((e) => {
+      const arrayedPathsObj = Object.entries(
+        this.replacedApiDoc.paths
+      ).map((e) => [e[0], Object.entries(e[1])])
+      const arrOfFlatPathsObj = arrayedPathsObj.flatMap((e) => {
         const objects = e[1].map((elem) => {
           return { path: e[0], method: elem[0], opeObj: elem[1] }
         })
         return objects
       })
       // sort ApiDoc by path(a->z) and group ApiDoc by UniqueTags
-      const flatPathsObjGroups = this.uniqueTags.map((tag) => {
+      const groupsByTag = this.uniqueTags.map((tag) => {
         return {
           tag,
-          flatPathsObj: [...flatPathsObj]
+          arrOfFlatPathsObj: [...arrOfFlatPathsObj]
             .filter((element) => element.opeObj.tags.includes(tag))
             .sort((a, b) => {
               const _a = a.path.toString().toLowerCase()
@@ -101,7 +130,7 @@ export default {
             })
         }
       })
-      return flatPathsObjGroups
+      return groupsByTag
     }
   }
 }
