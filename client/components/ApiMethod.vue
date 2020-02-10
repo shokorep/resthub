@@ -37,8 +37,9 @@
               <span
                 v-if="parameter.required"
                 style="margin: 0; font-size: 10px; color: #f00;"
-                >*requierd</span
               >
+                *requierd
+              </span>
             </td>
             <td>
               <p>{{ parameter.schema.type }}</p>
@@ -46,22 +47,24 @@
             <td>
               <v-text-field
                 v-if="
-                  parameter.schema.type === 'string' &&
-                    !Object.keys(parameter.schema).includes('enum')
+                  isString(parameter.schema.type) && !hasEnum(parameter.schema)
                 "
                 outlined
                 dense
               />
-              <div v-if="parameter.schema.type === 'boolean'">
-                <v-select :items="[true, false]" dense outlined></v-select>
-              </div>
-              <div v-if="Object.keys(parameter.schema).includes('enum')">
+              <div
+                v-if="
+                  isString(parameter.schema.type) && hasEnum(parameter.schema)
+                "
+              >
                 <v-select
                   :items="parameter.schema.enum"
                   dense
                   outlined
-                  return-object
                 ></v-select>
+              </div>
+              <div v-if="isBoolean(parameter.schema.type)">
+                <v-select :items="[true, false]" dense outlined></v-select>
               </div>
             </td>
           </tr>
@@ -89,6 +92,15 @@ export default {
   methods: {
     existsKey: (obj, key) => {
       return Object.keys(obj).includes(key)
+    },
+    isString: (obj) => {
+      return obj === 'string'
+    },
+    isBoolean: (obj) => {
+      return obj === 'boolean'
+    },
+    hasEnum: (obj) => {
+      return Object.keys(obj).includes('enum')
     }
   }
 }
