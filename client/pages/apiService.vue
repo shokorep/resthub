@@ -1,5 +1,5 @@
 <template>
-  <div class="api-container">
+  <div class="api-service-container">
     <div class="side">
       <v-text-field
         label="Keywords"
@@ -30,7 +30,12 @@
       </div>
       <hr style="background-color:#646464" />
       <div class="api-methods-wapper">
-        <h3 v-for="tag in uniqueTags" :key="tag">{{ tag }}</h3>
+        <div v-for="(group, gIndex) in flatPathsObjGroupsByTag" :key="gIndex">
+          <h3 class="api-tag">{{ group.tag }}</h3>
+          <div v-for="(flatPathsObj, index) in group.flatPathsObj" :key="index">
+            <api-method :flat-paths-obj="flatPathsObj" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -39,8 +44,12 @@
 <script>
 // This script don't use TypeScript temporarily.
 import SwaggerParser from 'swagger-parser'
+import ApiMethod from '~/components/ApiMethod.vue'
 
 export default {
+  components: {
+    ApiMethod
+  },
   async asyncData({ route }) {
     const apiServiceId = route.query.apiServiceId
     const openapi = await SwaggerParser.parse(
@@ -66,13 +75,40 @@ export default {
       return tagsInTagsObject
         .concat(tagsInPathsObject)
         .filter((element, index, array) => array.indexOf(element) === index)
+    },
+    flatPathsObjGroupsByTag() {
+      // reformat PathsObj
+      const arrayedPathsObj = Object.entries(this.apiDoc.paths).map((e) => [
+        e[0],
+        Object.entries(e[1])
+      ])
+      const flatPathsObj = arrayedPathsObj.flatMap((e) => {
+        const objects = e[1].map((elem) => {
+          return { path: e[0], method: elem[0], opeObj: elem[1] }
+        })
+        return objects
+      })
+      // sort ApiDoc by path(a->z) and group ApiDoc by UniqueTags
+      const flatPathsObjGroups = this.uniqueTags.map((tag) => {
+        return {
+          tag,
+          flatPathsObj: [...flatPathsObj]
+            .filter((element) => element.opeObj.tags.includes(tag))
+            .sort((a, b) => {
+              const _a = a.path.toString().toLowerCase()
+              const _b = b.path.toString().toLowerCase()
+              return _a < _b ? -1 : 1
+            })
+        }
+      })
+      return flatPathsObjGroups
     }
   }
 }
 </script>
 
 <style scoped>
-.api-container {
+.api-service-container {
   /* Caution: `min-height: 100vh` does not work in IE 11 */
   color: #646464;
   text-align: left;
@@ -98,5 +134,12 @@ export default {
 }
 .api-methods-wapper {
   padding: 20px 0;
+}
+
+h2 {
+  font-size: 28px;
+}
+h3 {
+  font-size: 24px;
 }
 </style>
