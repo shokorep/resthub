@@ -87,12 +87,12 @@ export default {
         return repStr
       }
       const replacedObj = (obj) => {
-        const arr = JSON.stringify(obj)
+        const _string = JSON.stringify(obj)
           .split(`"$ref":`)
           .map((str) => (str.startsWith(`"#/`) ? replace(str) : str))
           .join('')
-        const _obj = JSON.parse(arr)
-        return arr.includes(`"$ref":`) ? replacedObj(_obj) : _obj
+        const _obj = JSON.parse(_string)
+        return _string.includes(`"$ref":`) ? replacedObj(_obj) : _obj
       }
       return replacedObj(this.apiDoc)
     },
