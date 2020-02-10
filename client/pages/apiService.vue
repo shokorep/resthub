@@ -14,7 +14,24 @@
       <p>Paths</p>
     </div>
     <div class="main">
-      {{ uniqueTags }}
+      <div class="titele-wapper">
+        <h1>{{ apiDoc.info.title }}</h1>
+        <div>{{ apiDoc.info.version }}</div>
+      </div>
+      <div class="info-wrapper">
+        <h2>Info</h2>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div v-html="$md.render(apiDoc.info.description)"></div>
+      </div>
+      <div class="servers-wrapper">
+        <h2>Servers</h2>
+        <v-select :items="apiDoc.servers" item-text="url" item-value="url">
+        </v-select>
+      </div>
+      <hr style="background-color:#646464" />
+      <div class="api-methods-wapper">
+        <h3 v-for="tag in uniqueTags" :key="tag">{{ tag }}</h3>
+      </div>
     </div>
   </div>
 </template>
@@ -55,7 +72,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.api-container {
   /* Caution: `min-height: 100vh` does not work in IE 11 */
   color: #646464;
   text-align: left;
@@ -78,5 +95,8 @@ export default {
 .main {
   padding: 30px;
   margin: 65px 0 60px 200px;
+}
+.api-methods-wapper {
+  padding: 20px 0;
 }
 </style>
