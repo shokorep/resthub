@@ -29,3 +29,5 @@ jobs:
         run: npm run lint
       - name: Run type tests
         run: npm run typecheck
+      - name: AWS-cli Check.
+        run: aws --version
