@@ -1,4 +1,4 @@
-name: Test
+name: Deploy
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
       - name: Directory check1
         run: ls -a
       - name: Build
-        run: cd home && yarn install && yarn build
+        run: npm install && npm run generate
       - name: Directory check2
         run: ls -a
 
@@ -46,4 +46,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_S3_PUT_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_S3_PUT_SECRET_KEY }}
-        run: aws s3 cp home/dist/ s3://matilda-tests3-01/ --recursive
+        run: aws s3 cp dist/ s3://matilda-tests3-01/ --recursive
