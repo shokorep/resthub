@@ -26,6 +26,8 @@ jobs:
           key: ${{ runner.os }}-node-${{ env.cache-version }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-${{ env.cache-version }}-
+      - name: Install dependencies
+        run: npm ci
       - name: Run lint
         run: npm run lint
       - name: Run type tests
