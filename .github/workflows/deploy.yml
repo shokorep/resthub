@@ -5,7 +5,6 @@ on:
     branches:
       - master
 
-
 env:
   cache-version: v1
 
@@ -27,22 +26,13 @@ jobs:
           key: ${{ runner.os }}-node-${{ env.cache-version }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-${{ env.cache-version }}-
-      - name: Install dependencies
-        run: npm ci
       - name: Run lint
         run: npm run lint
       - name: Run type tests
         run: npm run typecheck
-      - name: AWS-cli Check.
-        run: aws --version
-      - name: Directory check1
-        run: ls -a
       - name: Build
         run: npm install && npm run generate
-      - name: Directory check2
-        run: ls -a
-
-      - name: Copy
+      - name: Deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_S3_PUT_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_S3_PUT_SECRET_KEY }}
