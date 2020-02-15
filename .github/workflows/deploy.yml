@@ -1,5 +1,4 @@
-name: Deploy
-
+name: AAAADeploy
 on:
   push:
     branches:
