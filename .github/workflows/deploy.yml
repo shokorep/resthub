@@ -34,4 +34,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_S3_PUT_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_S3_PUT_SECRET_KEY }}
-        run: aws s3 cp dist/ ${{ secrets. AWS_S3_URL }} --recursive
+        run: aws s3 cp dist/ ${{ secrets. AWS_S3_RESTHUB_BUCKET }} --recursive
