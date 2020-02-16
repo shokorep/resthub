@@ -2,16 +2,17 @@ name: Deploy
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - '**'
 
 env:
-  cache-version: v1
+  CACHE_VERSION: v1
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    env:
+      CACHE_VERSION: ${{ secrets.CACHE_VERSION }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,15 +24,11 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ env.cache-version }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node-${{ env.cache-version }}-
+            ${{ runner.os }}-node-${{ env.CACHE_VERSION }}-
       - name: Install dependencies
         run: npm ci
-      - name: Run lint
-        run: npm run lint
-      - name: Run type tests
-        run: npm run typecheck
       - name: Build
         run: npm run generate
       - name: Deploy
