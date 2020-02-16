@@ -1,14 +1,16 @@
 name: Test
-
-on: [push, pull_request]
-
+on:
+  push:
+    branches-ignore:
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
 env:
   cache-version: v1
-
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
